@@ -1,6 +1,6 @@
 from selenium import webdriver
 
-from app.plugins.adultscraperx.internel import config
+from app.plugins.adultscraperx.setting import config
 
 
 class BrowserTools:

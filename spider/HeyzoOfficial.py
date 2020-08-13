@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from app.core.model.meta_data import MetaData
 from app.plugins.adultscraperx.spider.uncensored_spider import UnsensoredSpider
 import sys
 if sys.version.find('2', 0, 1) == 0:
@@ -32,7 +33,7 @@ class HeyzoOfficial(UnsensoredSpider):
         if html_item['issuccess']:
             media_item = self.analysis_media_html_byxpath(
                 html_item['html'], queryKeyword)
-            item.append({'issuccess': True, 'data': media_item})
+            item.append(media_item)
         else:
             pass  # print repr(html_item['ex'])
 
@@ -70,12 +71,10 @@ class HeyzoOfficial(UnsensoredSpider):
             summary = summary[0]
             media.summary = summary
 
-        media.update(
-            {'m_poster': 'https://www.heyzo.com/contents/3000/%s/images/player_thumbnail.jpg' % q})
-        media.update(
-            {'m_art_url': 'https://www.heyzo.com/contents/3000/%s/gallery/001.jpg' % q})
+        media.poster = 'https://www.heyzo.com/contents/3000/%s/images/player_thumbnail.jpg' % q
+        media.thumbnail = 'https://www.heyzo.com/contents/3000/%s/gallery/001.jpg' % q
 
-        media.update({'m_studio': 'Heyzo'})
+        media.studio = 'Heyzo'
 
         xpath_collections = "//tr[@class='table-series']/td[2]/text()"
         collections = html.xpath(xpath_collections)

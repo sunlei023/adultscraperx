@@ -127,6 +127,7 @@ class BasicSpider:
 
     def picture_to_base64 (self, img):
         output_buffer = BytesIO()
+        img = img.convert('RGB')
         img.save(output_buffer, format='JPEG')
         byte_data = output_buffer.getvalue()
         base64_str = base64.b64encode(byte_data)

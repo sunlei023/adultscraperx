@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 
+from app.core.model.meta_data import MetaData
 from app.plugins.adultscraperx.spider.uncensored_spider import UnsensoredSpider
 
 
@@ -55,7 +56,7 @@ class Javr(UnsensoredSpider):
                         # if pt is not None:
                         #     media_item.update({'m_number': media_item['m_number'] + pt})
                         #     media_item.update({'m_title': media_item['m_title'] + pt})
-                        item.append({'issuccess': True, 'data': media_item})
+                        item.append(media_item)
                         return item
                     else:
                         pass  # print repr(html_item['ex'])
@@ -71,6 +72,7 @@ class Javr(UnsensoredSpider):
         media = MetaData()
         number = self.tools.cleanstr(q.upper())
         media.number = number
+        media.web = 'javr'
 
         studio_text = ''
         xpath_p = "//div[@class='post-metadata']/p"
@@ -85,14 +87,14 @@ class Javr(UnsensoredSpider):
         title = title[0].replace(
             'Watch XXX Japanese Porn - ', '').replace(studio, '')
         media.title = title
-        media.update({'m_summary': title})
+        media.summary = title
 
         xpath_poster = "//img[@id='myvidcover']/@src"
         post_url_list = html.xpath(xpath_poster)
         for post_url in post_url_list:
             if len(re.findall('data:image', post_url)) < 1:
-                media.update({'m_poster': post_url})
-                media.update({'m_art_url': post_url})
+                media.poster = post_url
+                media.thumbnail = post_url
 
         media.studio = studio
 
@@ -119,7 +121,7 @@ class Javr(UnsensoredSpider):
                     actor.update({actorname: actor_url[i]})
                 except Exception as ex:
                     actor.update(
-                        {actorname: 'https://media.javr.club/wp-content/uploads/2019/02/pornstar-no-img-1.jpg'})
+                        {actorname: 'https://ravecloud.xyz/2019/02/javraveclublogo_41.png'})
 
             media.actor = actor
 

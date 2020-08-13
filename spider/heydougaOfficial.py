@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from app.core.model.meta_data import MetaData
 from app.plugins.adultscraperx.internel.browser_tools import BrowserTools
 from app.plugins.adultscraperx.spider.uncensored_spider import UnsensoredSpider
 from PIL import Image
@@ -36,8 +37,8 @@ class HeydougaOfficial(UnsensoredSpider):
             browser = browserTools.getBrowser()
 
             media_item = self.analysis_media_html_byxpath(browser, queryKeyword)
-            if len(media_item) > 0:
-                item.append({'issuccess': True, 'data': media_item})
+            if media_item.title and media_item.title is not '':
+                item.append(media_item)
 
             browserTools.closeBrowser()
         else:
@@ -64,7 +65,7 @@ class HeydougaOfficial(UnsensoredSpider):
         browser.get('https://www.heydouga.com/moviepages/%s/index.html' % q)
 
         media = MetaData()
-        media.update({'m_number': q.replace('/', '-')})
+        media.number = q.replace('/', '-')
 
         xpath_title = "//div[@id='title-bg']/h1"
         title = browser.find_elements_by_xpath(xpath_title)[0].text
@@ -78,16 +79,14 @@ class HeydougaOfficial(UnsensoredSpider):
             summary = self.tools.cleanstr(summary)
             media.summary = summary
 
-        media.update(
-            {'m_poster': 'https://www.heydouga.com/contents/%s/player_thumb.jpg' % self.format(imgnumber)})
-        media.update(
-            {'m_art_url': 'https://www.heydouga.com/contents/%s/player_thumb.jpg' % self.format(imgnumber)})
+        media.poster = 'https://www.heydouga.com/contents/%s/player_thumb.jpg' % self.format(imgnumber)
+        media.thumbnail = 'https://www.heydouga.com/contents/%s/player_thumb.jpg' % self.format(imgnumber)
 
         #xpath_studio = "//div[@class='col-md-3 info']/p[5]/a/text()"
         #studio = html.xpath(xpath_studio)
         # if len(studio) > 0:
         #studio = self.tools.cleanstr(studio[0])
-        media.update({'m_studio': 'heydouga'})
+        media.studio = 'heydouga'
 
         # xpath_directors = "//div[@class='col-md-3 info']/p[4]/a/text()"
         # directors = html.xpath(xpath_directors)
@@ -99,7 +98,7 @@ class HeydougaOfficial(UnsensoredSpider):
         # collections = html.xpath(xpath_collections)
         # if len(collections) > 0:
         #     collections = self.tools.cleanstr(collections[0])
-        media.update({'m_collections': 'heydouga'})
+        media.collections ='heydouga'
 
         xpath_year = "//div[@id='movie-info']//li[1]/span[2]"
         year = browser.find_elements_by_xpath(xpath_year)[0].text
@@ -122,20 +121,27 @@ class HeydougaOfficial(UnsensoredSpider):
         actor_name = browser.find_elements_by_xpath(xpath_actor_name)
         #actor_url = html.xpath(xpath_actor_url)
         if len(actor_name) > 0:
-            for i, actorname in enumerate(actor_name):
+            actor_names = actor_name[0].text.split(' ')
+            for actorname in actor_names:
                 #     if actor_url[i].find('nowprinting') > 0:
                 #         actor.update({actorname: ''})
                 #     else:
-                actor.update({actorname.text: ''})
+                actor.update({actorname: ''})
             media.actor = actor
 
         return media
 
     def format(self, code):
+        code = code.replace('heydouga-','')
+        code = code.replace('heydouga','')
+        code = code.replace('heydouga/','')
+        code = code.replace('Heydouga-','')
+        code = code.replace('Heydouga','')
+        code = code.replace('Heydouga/','')
 
         if len(code) == 8:
             code = code.replace(code[4], '/')
-        elif len(code) == 10:
+        elif len(code) == 9:
             code = code.replace(code[4], '/')
         elif len(code) == 13:
             code = code.replace(code[4], '/').replace(code[9], '-')
@@ -144,6 +150,5 @@ class HeydougaOfficial(UnsensoredSpider):
                 code[4], '/').replace(code[9], '-').replace(code[16], '_')
         else:
             pass
-        code = code.replace('heydouga-','')
 
         return code

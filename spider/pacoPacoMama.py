@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 import sys
+
+from app.core.model.meta_data import MetaData
+
 if sys.version.find('2', 0, 1) == 0:
     try:
         from cStringIO import StringIO
@@ -31,7 +34,7 @@ class PacoPacoMama(UnsensoredSpider):
         if html_item['issuccess']:
             media_item = self.analysis_media_html_byxpath(
                 html_item['html'], q)
-            item.append({'issuccess': True, 'data': media_item})
+            item.append(media_item)
         else:
             pass  # print repr(html_item['ex'])
 
@@ -65,8 +68,8 @@ class PacoPacoMama(UnsensoredSpider):
         # poster = html.xpath(xpath_poster)        
         # if len(poster) > 0:
         # poster = self.tools.cleanstr(poster[0])
-        media.update({'m_poster': 'https://www.pacopacomama.com/moviepages/%s/images/poster_en.jpg' % number})
-        media.update({'m_art_url': 'https://www.pacopacomama.com/moviepages/%s/images/l/1.jpg' % number})
+        media.poster = 'https://www.pacopacomama.com/moviepages/%s/images/poster_en.jpg' % number
+        media.thumbnail = 'https://www.pacopacomama.com/moviepages/%s/images/l/1.jpg' % number
 
         # xpath_studio = "//div[@class='col-md-3 info']/p[5]/a/text()"
         # studio = html.xpath(xpath_studio)

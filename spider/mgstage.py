@@ -2,6 +2,7 @@
 import time
 import logging
 
+from app.core.model.meta_data import MetaData
 from app.plugins.adultscraperx.internel.browser_tools import BrowserTools
 from app.plugins.adultscraperx.spider.uncensored_spider import UnsensoredSpider
 
@@ -41,9 +42,8 @@ class MGStage(UnsensoredSpider):
             logging.info('结束模拟')
             logging.info('关闭 browser 模拟')
             browserTools.closeBrowser()
-            if not media_item == None:
-                if len(media_item) > 0:
-                    results.append({'issuccess': True, 'data': media_item})
+            if media_item.title and media_item.title is not '':
+                results.append(media_item)
 
             return results
 
@@ -76,20 +76,17 @@ class MGStage(UnsensoredSpider):
                     media.actor = actor
 
                 if keyword == 'メーカー':  # 工作室
-                    media.update({'m_studio': self.tools.cleanstr(value)})
+                    media.studio = self.tools.cleanstr(value)
 
                 if keyword == '品番':  # 番号
-                    media.update({'m_number': self.tools.cleanstr(value)})
+                    media.number = self.tools.cleanstr(value)
 
                 if keyword == '配信開始日':  # 日期
-                    media.update(
-                        {'m_year': self.tools.formatdatetime(self.tools.cleanstr(value))})
-                    media.update(
-                        {'m_originally_available_at': self.tools.formatdatetime(self.tools.cleanstr(value))})
+                    media.year = self.tools.formatdatetime(self.tools.cleanstr(value))
+                    media.originally_available_at = self.tools.formatdatetime(self.tools.cleanstr(value))
 
                 if keyword == 'シリーズ':  # 系列
-                    media.update(
-                        {'m_collections': self.tools.cleanstr2(self.tools.cleanstr(value))})
+                    media.collections = self.tools.cleanstr2(self.tools.cleanstr(value))
 
                 if keyword == 'ジャンル':  # 类型
                     # types
@@ -107,7 +104,7 @@ class MGStage(UnsensoredSpider):
         # title
         title_xpath = "//h1[@class='tag']"
         title = browser.find_elements_by_xpath(title_xpath)
-        media.update({'m_title': self.tools.cleanstr(title[0].text)})
+        media.title = self.tools.cleanstr(title[0].text)
 
         more_xpath = "//p[@id='introduction_all']"
         more = browser.find_elements_by_xpath(more_xpath)
@@ -116,14 +113,14 @@ class MGStage(UnsensoredSpider):
 
         summary_xpath = "//p[@class='txt introduction']"
         summary = browser.find_elements_by_xpath(summary_xpath)
-        media.update({'m_summary': summary[0].text})
+        media.summary = summary[0].text
 
         poster_xpath = "//a[@id='EnlargeImage']"
         poster = browser.find_elements_by_xpath(poster_xpath)
-        media.update({'m_poster': poster[0].get_attribute('href')})
+        media.poster = poster[0].get_attribute('href')
 
         art_xpath = "//div[@class='detail_left']/dl[@id='sample-photo']/dd/ul/li[1]/a[@class='sample_image']"
         art = browser.find_elements_by_xpath(art_xpath)
-        media.update({'m_art_url': art[0].get_attribute('href')})
+        media.thumbnail = art[0].get_attribute('href')
 
         return media

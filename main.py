@@ -21,7 +21,7 @@ def search(meta_info, user_setting):
     elif user_setting.get('europe_directory_mark') in part_file:
         movie_type = 'europe'
 
-    if movie_type != "" or not spider_config.SOURCE_LIST[movie_type]:
+    if movie_type != '' or not spider_config.SOURCE_LIST[movie_type]:
         for template in spider_config.SOURCE_LIST[movie_type]:
             # 循环模板列表
             code_list = []

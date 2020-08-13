@@ -3,6 +3,7 @@
 import re
 import sys
 
+from app.core.model.meta_data import MetaData
 from app.plugins.adultscraperx.spider.uncensored_spider import UnsensoredSpider
 
 if sys.version.find('2', 0, 1) == 0:
@@ -33,11 +34,11 @@ class Fc2Club(UnsensoredSpider):
         item = []
         '获取查询结果页html对象'
         url = 'https://%s/html/%s.html' % (self.basicUrl, q)
-        html_item = self.getHtmlByurl(url)
+        html_item = self.get_html_byurl(url)
         if html_item['issuccess']:
             media_item = self.analysisMediaHtmlByxpath(
                 html_item['html'], q)
-            item.append({'issuccess': True, 'data': media_item})
+            item.append( media_item)
         else:
             pass
 
@@ -50,34 +51,35 @@ class Fc2Club(UnsensoredSpider):
                 html_xpath_dict:<dict>
                 return:<dict{issuccess,ex,dict}>
                 """
-        media = self.media.copy()
+        media = MetaData()
         number = self.tools.cleanstr(q.upper())
-        media.update({'m_number': number})
+        media.number = number
 
         xpath_title = "/html/body/div[2]/div/div[1]/h3"
         title = html.xpath(xpath_title)[0].text
-        media.update({'m_title': title})
+        media.title = title
 
         summary = title
-        media.update({'m_summary': summary})
+        media.summary = summary
 
         xpath_poster_url = "//*[@id='slider']/ul[1]/li[1]/img"
         poster_url = 'https://' + self.basicUrl + html.xpath(xpath_poster_url)[0].attrib['src']
-        media.update({'m_poster': poster_url})
-        media.update({'m_art_url': poster_url})
+        media.poster = poster_url
+        media.thumbnail = poster_url
 
         studio = 'FC2'
-        media.update({'m_studio': studio})
+        media.studio = studio
 
         directors = ''
-        media.update({'m_directors': directors})
+        media.directors = directors
 
         xpath_collections = "/html/body/div[2]/div/div[1]/h5[3]/a[1]"
         collections = html.xpath(xpath_collections)[0].text
-        media.update({'m_collections': collections})
+        media.collections = collections
 
         year = ''
-        media.update({'m_year': year})
+        media.year = year
+        media.originally_available_at = year
 
         xpath_category = "/html/body/div[2]/div/div[1]/h5[6]/a"
         categorys = html.xpath(xpath_category)
@@ -86,11 +88,11 @@ class Fc2Club(UnsensoredSpider):
             category_list.append(self.tools.cleanstr(category.text))
         categorys = ','.join(category_list)
         if len(categorys) > 0:
-            media.update({'m_category': categorys})
+            media.category = categorys
 
         xpath_actor_name = "/html/body/div[2]/div/div[1]/h5[5]/a"
         actor_name = html.xpath(xpath_actor_name)[0].text
         if actor_name != '':
-            media.update({'m_collections': actor_name})
+            media.actor = actor_name
 
         return media

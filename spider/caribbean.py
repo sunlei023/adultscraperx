@@ -3,6 +3,7 @@
 import re
 import sys
 
+from app.core.model.meta_data import MetaData
 from app.plugins.adultscraperx.spider.uncensored_spider import UnsensoredSpider
 
 if sys.version.find('2', 0, 1) == 0:
@@ -32,11 +33,11 @@ class Caribbean(UnsensoredSpider):
         item = []
         '获取查询结果页html对象'
         url = 'https://%s/moviepages/%s/index.html' % (self.basicUrl, q)
-        html_item = self.getHtmlByurl(url)
+        html_item = self.get_html_byurl(url)
         if html_item['issuccess']:
             media_item = self.analysisMediaHtmlByxpath(
                 html_item['html'], q)
-            item.append({'issuccess': True, 'data': media_item})
+            item.append(media_item)
         else:
             pass  # print repr(html_item['ex'])
 
@@ -49,38 +50,38 @@ class Caribbean(UnsensoredSpider):
         html_xpath_dict:<dict>
         return:<dict{issuccess,ex,dict}>
         """
-        media = self.media.copy()
+        media = MetaData()
         number = self.tools.cleanstr(q.upper())
-        media.update({'m_number': number})
+        media.number = number
+        media.web = 'caribbean'
+
 
         xpath_title = "//*[@id='moviepages']/div/div[1]/div[1]/div[2]/h1"
         title = html.xpath(xpath_title)[0].text
 
-        media.update({'m_title': title})
+        media.title = title
 
         xpath_summary = "//*[@id='moviepages']/div/div[1]/div[1]/p"
         summary = html.xpath(xpath_summary)[0].text
 
-        media.update({'m_summary': summary})
+        media.summary = summary
 
-        media.update({'m_poster': 'https://%s/moviepages/%s/images/l_l.jpg' % (self.basicUrl, number)})
-        media.update({'m_art_url': 'https://%s/moviepages/%s/images/l_l.jpg' % (self.basicUrl, number)})
+        media.poster = 'https://%s/moviepages/%s/images/l_l.jpg' % (self.basicUrl, number)
+        media.thumbnail = 'https://%s/moviepages/%s/images/l_l.jpg' % (self.basicUrl, number)
 
         studio = 'Caribbeancom'
-        media.update({'m_studio': studio})
+        media.studio = studio
 
         directors = ''
-        media.update({'m_directors': directors})
+        media.directors = directors
 
         collections = 'Caribbeancom'
-        media.update({'m_collections': collections})
+        media.collections = collections
 
         xpath_year = "//*[@id='moviepages']/div/div[1]/div[1]/ul/li[2]/span[2]"
         year = html.xpath(xpath_year)[0].text
-        # if len(year) > 0:
-        #     year = self.tools.cleanstr(year[0])
-        media.update({'m_year': year})
-        media.update({'m_originallyAvailableAt': year})
+        media.year = year
+        media.originally_available_at = year
 
         xpath_category = "//*[@id='moviepages']/div/div[1]/div[1]/ul/li[4]/span[2]/a"
         categorys = html.xpath(xpath_category)
@@ -89,15 +90,15 @@ class Caribbean(UnsensoredSpider):
             category_list.append(self.tools.cleanstr(category.text))
         categorys = ','.join(category_list)
         if len(categorys) > 0:
-            media.update({'m_category': categorys})
+            media.category = categorys
 
 
         xpath_actor_name = "//*[@id='moviepages']/div/div[1]/div[1]/ul/li[1]/span[2]/a/span"
         actor_name = html.xpath(xpath_actor_name)
         actor_dict = {}
         for actor in actor_name:
-            actor_dict[actor.text] = 'https://www.caribbeancom.com/images/cc-logo.svg'
-        media.update({'m_actor': actor_dict})
+            actor_dict[actor.text] = 'https://images.d2pass.com/images/d2p_toolbar/images/d2p_logo.png'
+        media.actor = actor_dict
         return media
 
         

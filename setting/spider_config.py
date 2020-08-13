@@ -91,7 +91,7 @@ SOURCE_LIST = {
             "name": 'fc2club for FC2PPV',
             "pattern": r"(fc|Fc|FC).*\d{6,7}",
             'formatter': Fc2ClubFormatter,
-            'webList': [Fc2Club]
+            'web_list': [Fc2Club]
         },
         #  javr for FC2PPV
         {
