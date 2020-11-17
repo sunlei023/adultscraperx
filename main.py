@@ -1,7 +1,9 @@
 import re
 
 from app.plugins.adultscraperx import config
+from app.plugins.adultscraperx.config import get_info
 from app.plugins.adultscraperx.setting import spider_config
+from app.tools.cache_tools import set_cache, check_cache
 from app.tools.log_tools import log
 
 
@@ -39,10 +41,15 @@ def search(meta_info, user_setting):
             for code in code_list:
                 web_list = template['web_list']
                 code = template['formatter'].format(code)
-                for webSiteClass in web_list:
-                    web_site = webSiteClass()
-                    items = web_site.search_with_img(code)
-                    for item in items:
-                        meta_data_list.append(item)
-
+                cache_data = check_cache(code, get_info('en').get('name'))
+                if cache_data:
+                    meta_data_list.extend(cache_data)
+                else:
+                    for webSiteClass in web_list:
+                        web_site = webSiteClass()
+                        items = web_site.search_with_img(code)
+                        for item in items:
+                            cache_id = set_cache(code, item, get_info('en').get('name'))
+                            item.cache_id = cache_id
+                            meta_data_list.append(item)
     return meta_data_list
