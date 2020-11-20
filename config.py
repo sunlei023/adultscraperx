@@ -32,6 +32,26 @@ def get_settings(lang):
     i18n = I18n(lang)
     return [
         {
+            'type': 'select',
+            'label': i18n.str('japan_title_style'),
+            'model': 'japan_title_style',
+            'place_holder': 'place_holder',
+            'option': [
+                {
+                    'label': '番号',
+                    'value': 'number'
+                },
+                {
+                    'label': '标题',
+                    'value': 'title'
+                },
+                {
+                    'label': '番号+标题',
+                    'value': 'numbertitle'
+                },
+            ]
+        },
+        {
             'type': 'text',
             'label': i18n.str('japan_censored_directory_mark'),
             'model': 'japan_censored_directory_mark',
@@ -56,3 +76,5 @@ def get_settings(lang):
             'place_holder': 'place_holder',
         }
     ]
+
+

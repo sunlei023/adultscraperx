@@ -6,4 +6,5 @@ text = {
     'japan_uncensored_directory_mark': '日本-无码目录标记',
     'japan_animation_directory_mark': '日本-动漫目录标记',
     'europe_directory_mark': '欧美-目录标记',
+    'japan_title_style':'日本标题样式',
 }

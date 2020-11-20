@@ -1,6 +1,12 @@
 {
   "requirements": [
     {
+      "name": "pillow",
+      "version": "release"
+    },
+    {
+      "name": "selenium",
+      "version": "release"
     }
   ]
 }
