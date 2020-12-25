@@ -69,6 +69,7 @@ def search(meta_info, user_setting):
                 dict_item['title'] = '%s  %s' % (
                     dict_item['number'], dict_item['title'])
         except Exception as ex:
+            log('error', repr(ex), plugin_name)
             continue
 
     return meta_data_list
