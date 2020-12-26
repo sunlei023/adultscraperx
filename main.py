@@ -55,21 +55,19 @@ def search(meta_info, user_setting):
                         web_site = webSiteClass()
                         items = web_site.search_with_img(code)
                         for item in items:
-                            cache_id = set_cache(
-                                code, item, get_info('en').get('name'))
-                            item.cache_id = cache_id
-                            meta_data_list.append(item)
+                            item['code'] = code
+                            item['original_title'] = item['title']
+                        meta_data_list.extend(items)
     # 标题样式设定
     for dict_item in meta_data_list:
-        dict_item['original_title'] = dict_item['title']
         try:
             if title_style == 'number':
-                dict_item['title'] = dict_item['number']
+                dict_item['title'] = dict_item['code']
             elif title_style == 'numbertitle':
                 dict_item['title'] = '%s  %s' % (
-                    dict_item['number'], dict_item['title'])
+                    dict_item['code'], dict_item['original_title'])
         except Exception as ex:
-            log('error', repr(ex), plugin_name)
+            log('error', ex, plugin_name)
             continue
 
     return meta_data_list
