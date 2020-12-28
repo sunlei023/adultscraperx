@@ -62,10 +62,10 @@ def search(meta_info, user_setting):
     for dict_item in meta_data_list:
         try:
             if title_style == 'number':
-                dict_item['title'] = dict_item['code']
+                dict_item['title'] = dict_item['number']
             elif title_style == 'numbertitle':
                 dict_item['title'] = '%s  %s' % (
-                    dict_item['code'], dict_item['original_title'])
+                    dict_item['number'], dict_item['original_title'])
         except Exception as ex:
             log('error', ex, plugin_name)
             continue
