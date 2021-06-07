@@ -50,7 +50,8 @@ class Onejav(BasicSpider):
         media = MetaData()
         title = q.upper()
         media.title = title
-
+        number = self.tools.cleanstr(q.upper())
+        media.number = number
         xpath_poster = "//div[@class='column']/img[@class='image']/@src"
         poster = html.xpath(xpath_poster)
         if len(poster) > 0:
@@ -62,7 +63,7 @@ class Onejav(BasicSpider):
         summary = html.xpath(xpath_summary)
         if len(summary) > 0:
             summary = summary[0]
-            media.summary = summary
+            media.summary = summary+''
 
         xpath_year = "//p[@class='subtitle is-6']/a/text()"
         year = html.xpath(xpath_year)

@@ -79,7 +79,7 @@ class Javbus(BasicSpider):
         xpath_poster = "//div[@class='col-md-9 screencap']/a[@class='bigImage']/img/@src"
         poster = html.xpath(xpath_poster)
         if len(poster) > 0:
-            poster = self.tools.cleanstr(poster[0])
+            poster = self.checkUrl + self.tools.cleanstr(poster[0])
             media.poster = poster
             media.thumbnail = poster
 
@@ -118,19 +118,17 @@ class Javbus(BasicSpider):
             media.category = categorys
 
         actor = {}
-        xpath_actor_name = "/html/body/div[@class='container']/div[@class='row movie']/div[@class='col-md-3 info']/p[10]/span[@class='genre']/a/text()"
+        xpath_actor_name = "/html/body/div[5]/div[1]/div[2]/p/span/a"
         xpath_actor_url = "//div[@id='star-div']//img/@src"
 
         actor_name = html.xpath(xpath_actor_name)
         actor_url = html.xpath(xpath_actor_url)
-
         if len(actor_name) > 0:
             for i, actorname in enumerate(actor_name):
                 if actor_url[i].find('nowprinting') > 0:
-                    actor.update({actorname: ''})
+                    actor.update({actorname.text: ''})
                 else:
-                    actor.update({actorname: actor_url[i]})
+                    actor.update({actorname.text: self.checkUrl + actor_url[i]})
             media.actor = actor
 
         return media
-
