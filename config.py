@@ -20,7 +20,7 @@ def get_info(lang):
     return {
         'name': i18n.str('name'),
         'tittle': i18n.str('tittle'),
-        'version': '0.1.1',
+        'version': '0.2.0',
         'github': 'https://github.com/gsetant/adultscraperx',
         'icon': icon,
         'content': i18n.str('content')
