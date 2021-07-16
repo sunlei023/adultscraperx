@@ -1,19 +1,21 @@
 # adultscraperx
 
-##### 适用于Gsetant平台的AdultScraperX 成人电影元数据搜刮，可实现日本步兵，骑兵，动漫，欧美等多种资源的匹配与元数据获取。Gsetant中可在管理员插件管理页面通过本项目地址进行自动安装 https://github.com/gsetant/adultscraperx
+#### [English](README.md) [简体中文](README-cn.md)
 
-### 对本地文件的存储要求和服务配置
+##### AdultScraperX is a porn video metadata scraper for the Gsetant platform, which can realize the matching and metadata acquisition of various resources such as Japanese censored, Japanese uncensored, animation and American resources. Gsetant can be automatically installed through this project address on the administrator plug-in management page https://github.com/gsetant/adultscraperx
 
-##### 由于多种影片之间存在番号冲突的现象，所以本插件要求日本步兵，日本骑兵，日本动漫，欧美资源需要按照一定规则分开存储。具体规则如下
+### Storage requirements and service configuration for local files
 
-##### 在Gsetant 服务端AdultScraperX 插件设置中设置目录标记:
-- 欧美与日本(骑兵、步兵、动漫)的目录标记可以在插件中自定义配置:
-- 配置主目录标记，必须含有(前、后)特殊字符如：-M- 、\*M\*、=M=以此类推
-- 目录标记只可出现一次，并且与主目录文件夹名的标记一致才可识别
+##### Due to the phenomenon of number conflicts between multiple movies, this plugin requires Japanese censored, Japanese uncensored, Japanese animation and American resources to be stored separately according to certain rules. The specific rules are as follows
 
-##### 本地主目录配置标记举例：
-- 修改你的本地文件夹为如下：
-- volume1/有码=M=/（无数个子目录）/（无数个文件）.mp4
-- volume1/无码=NM=/（无数个子目录）/（无数个文件）.mp4
-- volume1/动漫=A=/（无数个子目录）/（无数个文件）.mp4
-- volume1/欧美=E=/（无数个子目录）/（无数个文件）.mp4
+##### Set the directory mark in the AdultScraperX plugin settings on the Gsetant server:
+-The catalog marks of America and Japan (censored, uncensored, anime) can be customized in the plugin:
+-Configure the home directory mark, which must contain (before and after) special characters such as: -M-, \*M\*, =M= and so on
+-The directory mark can only appear once, and is consistent with the mark of the main directory folder name to be recognized
+
+##### Examples of local home directory configuration flags:
+-Modify your local folder as follows:
+-volume1/japanese censored=M=/(numerous subdirectories)/(numerous files).mp4
+-volume1/japanese uncensored=NM=/(numerous subdirectories)/(numerous files).mp4
+-volume1/anime=A=/(numerous subdirectories)/(numerous files).mp4
+-volume1/America=E=/(numerous subdirectories)/(numerous files).mp4
