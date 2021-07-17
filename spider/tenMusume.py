@@ -3,6 +3,7 @@ import re
 import sys
 
 from app.core.model.meta_data import MetaData
+from app.plugins.adultscraperx.internel.browser_tools import BrowserTools
 from app.plugins.adultscraperx.spider.uncensored_spider import UnsensoredSpider
 
 if sys.version.find('2', 0, 1) == 0:
@@ -37,9 +38,13 @@ class TenMusume(UnsensoredSpider):
         url = 'https://www.10musume.com/movies/%s/' % q
         html_item = self.get_html_byurl(url)
         if html_item['issuccess']:
+            browserTools = BrowserTools()
+            browser = browserTools.getBrowser()
+            browser.get("https://www.10musume.com/movies/%s/" % q)
             media_item = self.analysis_media_html_byxpath(
-                html_item['html'], q)
+                browser, q)
             item.append(media_item)
+            browserTools.closeBrowser()
         else:
             pass  # print repr(html_item['ex'])
 
@@ -56,25 +61,23 @@ class TenMusume(UnsensoredSpider):
         number = self.tools.cleanstr(q.upper())
         media = MetaData()
 
-        xpath_title = "//dl[@class='list-spec cf']/dd[1]/text()"
-        title = html.xpath(xpath_title)
+        xpath_title = '/html/body/div[2]/main/div/div[2]/div[1]/div[1]/div[2]/h1'
+        title = html.find_elements_by_xpath(xpath_title)
         if len(title) > 0:
-            title = self.tools.cleantitlenumber(
-                self.tools.cleanstr(title[0]), number)
-            media.title = title
+            media.title = title[0].text
 
-        xpath_summary = "//div[@class='detail-info__item'][2]/p[@class='detail-info__comment']/text()"
-        summary = html.xpath(xpath_summary)
+        xpath_summary = '/html/body/div[2]/main/div/div[2]/div[1]/div[1]/p'
+        summary = html.find_elements_by_xpath(xpath_summary)
         if len(summary) > 0:
-            summary = summary[0]
+            summary = summary[0].text
             media.summary = summary
 
         # xpath_poster = "//img/@src"
         # poster = html.xpath(xpath_poster)        
         # if len(poster) > 0:
         # poster = self.tools.cleanstr(poster[0])
-        media.poster = 'https://www.10musume.com/moviepages//%s/images/list1.jpg' % number
-        media.thumbnail = 'https://www.10musume.com/moviepages//%s/images/g_b001.jpg' % number
+        media.poster = 'https://www.10musume.com/assets/sample/%s/str.jpg' % number
+        media.thumbnail = 'https://www.10musume.com/assets/sample/%s/str.jpg' % number
 
         # xpath_studio = "//div[@class='col-md-3 info']/p[5]/a/text()"
         # studio = html.xpath(xpath_studio)
@@ -94,26 +97,26 @@ class TenMusume(UnsensoredSpider):
         collections = '天然むすめ'
         media.collections = collections
 
-        xpath_year = "//dl[@class='list-spec cf']/dd[2]/text()"
-        year = html.xpath(xpath_year)
+        xpath_year = '/html/body/div[2]/main/div/div[2]/div[1]/div[1]/ul/li[1]/span[2]'
+        year = html.find_elements_by_xpath(xpath_year)[0].text.split('/')
         if len(year) > 0:
-            year = self.tools.cleanstr(year[0])
-            self.media.year = year
-            self.media.originally_available_at = year
+            year = year[0]
+            media.year = year
+            media.originally_available_at = year
 
-        xpath_category = "//dl[@class='list-spec cf']/dd[7]/a/text()"
-        categorys = html.xpath(xpath_category)
+        xpath_category = '/html/body/div[2]/main/div/div[2]/div[1]/div[1]/ul/li[6]/span[2]/span/a'
+        categorys = html.find_elements_by_xpath(xpath_category)
         category_list = []
         for category in categorys:
-            category_list.append(self.tools.cleanstr(category))
+            category_list.append(category.text)
         categorys = ','.join(category_list)
         if len(categorys) > 0:
             media.category = categorys
 
         actor = {}
-        xpath_actor_name = "//dl[@class='list-spec cf']/dd[4]/a/text()"
+        xpath_actor_name = '/html/body/div[2]/main/div/div[2]/div[1]/div[1]/ul/li[3]/span[2]/span/a'
         # xpath_actor_url = "//div[@class='video-performer']/a/img/@style"
-        actor_name = html.xpath(xpath_actor_name)
+        actor_name = html.find_elements_by_xpath(xpath_actor_name)
         # actor_url = html.xpath(xpath_actor_url)
         if len(actor_name) > 0:
             for i, actorname in enumerate(actor_name):
@@ -122,8 +125,7 @@ class TenMusume(UnsensoredSpider):
                 actor.update({self.tools.cleanstr2(
                     actorname): actorimageurl})
                 '''
-                actor.update({self.tools.cleanstr2(
-                    actorname): ''})
+                actor.update({actorname.text: ''})
 
             media.actor = actor
 
