@@ -60,7 +60,7 @@ class TenMusume(UnsensoredSpider):
 
         number = self.tools.cleanstr(q.upper())
         media = MetaData()
-
+        media.number = number
         xpath_title = '/html/body/div[2]/main/div/div[2]/div[1]/div[1]/div[2]/h1'
         title = html.find_elements_by_xpath(xpath_title)
         if len(title) > 0:
