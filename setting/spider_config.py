@@ -35,7 +35,7 @@ SOURCE_LIST = {
         # 常规有码影片搜刮
         {
             "name": '常规有码影片搜刮',
-            "pattern": r"\w+[a-z]{1,5}\D{1}\d{1,5}|[a-z]{1,5}\d{1,5}",
+            "pattern": r"\w+[a-z]{,5}\D{1}\d{2,5}|[a-z]{1,5}\d{2,5}",
             'formatter': CensoredFormatter,
             'web_list': [Arzon, Javbus, Onejav]
         },
