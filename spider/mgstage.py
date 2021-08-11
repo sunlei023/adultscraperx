@@ -42,7 +42,7 @@ class MGStage(UnsensoredSpider):
             logging.info('结束模拟')
             logging.info('关闭 browser 模拟')
             browserTools.closeBrowser()
-            if media_item.title and media_item.title is not '':
+            if media_item and media_item.title and media_item.title is not '':
                 results.append(media_item)
 
             return results
