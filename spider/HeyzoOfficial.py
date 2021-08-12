@@ -72,7 +72,7 @@ class HeyzoOfficial(UnsensoredSpider):
             media.summary = summary
 
         media.poster = 'https://www.heyzo.com/contents/3000/%s/images/player_thumbnail.jpg' % q
-        media.thumbnail = 'https://www.heyzo.com/contents/3000/%s/gallery/001.jpg' % q
+        media.thumbnail = media.poster
 
         media.studio = 'Heyzo'
 
