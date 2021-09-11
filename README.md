@@ -2,7 +2,7 @@
 
 #### [English](README.md) [简体中文](README-cn.md)
 
-##### AdultScraperX is a porn video metadata scraper for the Gsetant platform, which can realize the matching and metadata acquisition of various resources such as Japanese censored, Japanese uncensored, animation and American resources. Gsetant can be automatically installed through this project address on the administrator plug-in management page https://github.com/gsetant/adultscraperx
+##### AdultScraperX is a porn video metadata scraper for the Gsetant platform, which can realize the matching and metadata acquisition of various resources such as Japanese censored, Japanese uncensored, animation and American resources. Gsetant can be automatically installed through this project address on the administrator plug-in management page https://github.com/sunlei023/adultscraperx
 
 ### Storage requirements and service configuration for local files
 
