@@ -2,7 +2,7 @@
 
 #### [English](README.md) [简体中文](README-cn.md)
 
-##### 适用于Gsetant平台的AdultScraperX 成人电影元数据搜刮，可实现日本步兵，骑兵，动漫，欧美等多种资源的匹配与元数据获取。Gsetant中可在管理员插件管理页面通过本项目地址进行自动安装 https://github.com/gsetant/adultscraperx
+##### 适用于Gsetant平台的AdultScraperX 成人电影元数据搜刮，可实现日本步兵，骑兵，动漫，欧美等多种资源的匹配与元数据获取。Gsetant中可在管理员插件管理页面通过本项目地址进行自动安装 https://github.com/sunlei023/adultscraperx
 
 ### 对本地文件的存储要求和服务配置
 
