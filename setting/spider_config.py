@@ -38,6 +38,7 @@ SOURCE_LIST = {
             "pattern": r"\w+[a-z]{,5}\D{1}\d{2,5}|[a-z]{1,5}\d{2,5}",
             'formatter': CensoredFormatter,
             'web_list': [Arzon, Javbus, Onejav]
+            'web_list': [Arzon, Javbus]
         },
         #  mgstage
         {
