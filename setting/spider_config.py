@@ -104,7 +104,7 @@ SOURCE_LIST = {
         # Caribbean
         {
             "name": 'Caribbean',
-            "pattern": r"\d{6}.\d{3}",
+            "pattern": r"\d{6}-\d{3}",
             'formatter': CaribbeanFormatter,
             'web_list': [Caribbean, Javr]
         },
@@ -118,21 +118,21 @@ SOURCE_LIST = {
         # Pacopacomama
         {
             "name": 'Pacopacomama',
-            "pattern": r"\d{6}.\d{3}",
+            "pattern": r"\d{6}_\d{3}",
             'formatter': OnePondoFormatter,
             'web_list': [PacoPacoMama, Javr]
         },
         # 10musume
         {
             "name": '10musume',
-            "pattern": r"\d{6}.\d{2}",
+            "pattern": r"\d{6}_\d{2}",
             'formatter': TenMusumeFormatter,
             'web_list': [TenMusume, Javr]
         },
         # one_pondo
         {
             "name": 'one_pondo',
-            "pattern": r"\d{6}.\d{3}",
+            "pattern": r"\d{6}_\d{3}",
             'formatter': OnePondoFormatter,
             'web_list': [OnePondo, Javr]
         }
